@@ -1,0 +1,34 @@
+Problem: Given a stack of integers st[]. Sort the stack in ascending order (smallest element at the bottom and largest at the top).
+
+Approach: stack
+Time Complexity: O(n^2)
+Space: O(n) - Stack space for recursive call
+
+Code:
+class Solution {
+    public void sortStack(Stack<Integer> st) {
+
+        if(st.empty()) return;
+        
+        int element = st.pop();
+        
+        sortStack(st);
+        
+        sort(st, element);
+        
+    }
+    
+    private void sort(Stack<Integer> st, int element) {
+        
+        if(st.empty() || st.peek() <= element){
+            st.push(element);
+            return;
+        }
+        
+        int top_element = st.pop();
+        
+        sort(st,element);
+        
+        st.push(top_element);
+    }
+}
