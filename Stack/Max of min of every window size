@@ -1,0 +1,77 @@
+Problem:
+You are given an integer array arr[], the task is to find the maximum of minimum values for every window size k where 1≤ k ≤ arr.size().
+
+For each window size k, consider all contiguous subarrays of length k, determine the minimum element in each subarray, and then take the maximum among all these minimums.
+
+Return the results as an array, where the element at index i represents the answer for window size i+1.
+
+Examples :
+
+Input: arr[] = [10, 20, 30, 50, 10, 70, 30]
+Output: [70, 30, 20, 10, 10, 10, 10] 
+Explanation: 
+Window size 1: minimums are [10, 20, 30, 50, 10, 70, 30], maximum of minimums is 70.
+Window size 2: minimums are [10, 20, 30, 10, 10, 30], maximum of minimums is 30.
+Window size 3: minimums are [10, 20, 10, 10, 10], maximum of minimums is 20.
+Window size 4–7: minimums are [10, 10, 10, 10], maximum of minimums is 10.
+
+
+Approach: Sliding window using Deque:
+Time complexity: O(n^2)
+Space complexity: O(n)
+
+code:
+class Solution {
+    public ArrayList<Integer> maxOfMins(int[] arr) {
+
+        int n = arr.length;
+    
+        ArrayList<Integer> list = new ArrayList<>();
+        
+        for(int i = 1; i <= n; i++){
+            list.add(find(arr, i));
+        }
+        
+        return list;
+    }
+    
+    
+    int find(int[] arr, int k) {
+
+        LinkedList<Integer> queue = new LinkedList<>();
+        
+        List<Integer> list = new ArrayList<>();
+        
+        int i = 0;
+        while(i < k-1) {
+            
+            if(!queue.isEmpty() && arr[queue.peekLast()] < arr[i]) {
+                queue.pollLast();
+            }
+            
+            queue.offer(i);
+            i++;
+        }
+        
+    
+        while(i < arr.length) {
+            
+            int last = i - k;
+            
+            while(!queue.isEmpty() && queue.peek() <= last) {
+                queue.poll();
+            }
+            while(!queue.isEmpty() && arr[queue.peekLast()] > arr[i]) {
+                queue.pollLast();
+            }
+            
+            queue.offer(i);
+            list.add(arr[queue.peek()]);
+            
+            i++;
+        }
+
+        return Collections.max(list);
+
+    }
+}
