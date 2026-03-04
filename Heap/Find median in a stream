@@ -1,0 +1,42 @@
+Problem:
+Given a data stream arr[] where integers are read sequentially, the task is to determine the median of the elements encountered so far after each new integer is read.
+
+The median is defined as follows:
+
+1. Odd number of elements: The median is the middle element when the current set of numbers is sorted.
+2. Even number of elements: The median is the arithmetic mean (average) of the two middle elements when the current set of numbers is sorted.
+
+
+Approach: Heap (minHeap + maxHeap)
+
+Time complexity: O(n * log n)
+Space complexity: o(n)
+
+Code:
+class Solution {
+    public ArrayList<Double> getMedian(int[] arr) {
+        Queue<Integer> minHeap = new PriorityQueue<>();
+        Queue<Integer> maxHeap = new PriorityQueue<>((a,b) -> b-a);
+        
+        ArrayList<Double> al = new ArrayList<>();
+        
+        for(int x : arr) {
+            
+            maxHeap.offer(x);
+            minHeap.offer(maxHeap.poll());
+            
+            maxHeap.offer(minHeap.poll());
+            
+            if(maxHeap.size() > minHeap.size()) {
+                minHeap.offer(maxHeap.poll());
+            }
+
+            if(maxHeap.size() == minHeap.size()) {
+                al.add(((double) minHeap.peek() + maxHeap.peek())/ 2);
+            }
+            else al.add((double) minHeap.peek());
+        }
+        
+        return al;  
+    }
+}

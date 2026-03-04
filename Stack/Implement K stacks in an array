@@ -1,0 +1,54 @@
+Problem: Implement K stack in an array
+
+Approach: Stack
+Time complexity: O(1)
+Space complexity: O(n) -> stack Space
+
+code:
+class kStacks {
+
+    // main array to store elements
+    private int[] arr;
+    int[] top;
+    int[] next;
+    int freeTop;
+
+    public kStacks(int n, int k) {
+        // initialize data structures for k stacks
+        arr = new int[n];
+        top = new int[k];
+        next = new int[n];
+        freeTop = 0;
+        
+        for(int i = n-2; i >= 0; i--) {
+            next[i] = i+1;
+        }
+        next[n-1] = -1;
+        
+        Arrays.fill(top, -1);
+        
+    }
+
+    public void push(int x, int i) {
+        // push element x into stack i
+        if(freeTop == -1) return;
+        
+        int ind = freeTop;
+        freeTop = next[ind];
+        arr[ind] = x;
+        next[ind] = top[i];
+        top[i] = ind;
+
+    }
+
+    public int pop(int i) {
+        if(top[i] == -1) return -1;
+        
+        int ind = top[i];
+        top[i] = next[ind];
+        next[ind] = freeTop;
+        freeTop = ind;  //Important step
+        return arr[ind];
+  
+    }
+}
