@@ -1,0 +1,37 @@
+Problem:
+Given an array of integers, print sums of all subsets in it. Output sums can be printed in any order.
+
+Examples : 
+
+Input: arr[] = {2, 3}
+Output: 0 2 3 5
+Explanation: All subsets of this array are - {{}, {2}, {3}, {2, 3}}, having sums - 0, 2, 3 and 5 respectively.
+
+Input: arr[] = {2, 4, 5}
+Output: 0 2 4 5 6 7 9 11
+
+Time complexity: O(2^n)
+Space complexity: O(n)
+
+Code:
+// User function Template for Java//User function Template for Java
+class Solution {
+    public ArrayList<Integer> subsetSums(int[] arr) {
+        // code here
+        ArrayList<Integer> res = new ArrayList<>();
+        f(0, arr.length, arr, 0, res);
+        return res;
+    }
+    
+    
+    private void f(int i, int n, int[] arr, int sum, ArrayList<Integer> res) {
+        
+        if(i == n) {
+            res.add(sum);
+            return;
+        }
+        
+        f(i+1, n, arr, sum+arr[i], res);
+        f(i+1, n, arr, sum, res);
+    }
+}
