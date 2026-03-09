@@ -1,0 +1,61 @@
+Problem:
+onsider a rat placed at position (0, 0) in an n x n square matrix maze[][]. The rat's goal is to reach the destination at position (n-1, n-1). The rat can move in four possible directions: 'U'(up), 'D'(down), 'L' (left), 'R' (right).
+
+The matrix contains only two possible values:
+
+0: A blocked cell through which the rat cannot travel.
+1: A free cell that the rat can pass through.
+Your task is to find all possible paths the rat can take to reach the destination, starting from (0, 0) and ending at (n-1, n-1), under the condition that the rat cannot revisit any cell along the same path. Furthermore, the rat can only move to adjacent cells that are within the bounds of the matrix and not blocked.
+If no path exists, return an empty list.
+
+Note: Return the final result vector in lexicographically smallest order.
+
+Time complexity: O(4 ^(n*n))
+Space complexity: O(n^2) -> created a matrix visit
+
+Code:
+class Solution {
+    public ArrayList<String> ratInMaze(int[][] maze) {
+        
+        ArrayList<String> res = new ArrayList<>();
+        int[][] visit = new int[maze.length][maze.length];
+        
+        int[] dirR = {0,1,0,-1};
+        int[] dirC = {1,0,-1,0};
+        char[] dir = {'R','D','L','U'};
+        visit[0][0] = 1;
+        f(0,0,new StringBuilder(), dirR,dirC,dir,maze,res, visit);
+        
+        Collections.sort(res);
+        
+        return res;
+    }
+    
+    void f(int row, int col, StringBuilder s, int[] dirR, int[] dirC, char[] dir, int[][] maze, ArrayList<String> res, int[][] visit) {
+        
+        int n = maze.length;
+        
+        if(row == n-1 && col == n-1) {
+            res.add(new String(s));
+            return;
+        }
+        
+        for(int i = 0; i < 4; i++) {
+            int new_row = row + dirR[i];
+            int new_col = col + dirC[i];
+            
+            if(new_row >= 0 && new_row < n && new_col >= 0 && new_col < n && maze[new_row][new_col] == 1 && visit[new_row][new_col] == 0) {
+                
+                visit[new_row][new_col] = 1;
+                
+                s.append(dir[i]);
+                
+                f(new_row, new_col, s, dirR, dirC, dir, maze, res, visit);
+                
+                s.deleteCharAt(s.length()-1);
+                visit[new_row][new_col] = 0;
+                
+            }
+        }
+    }
+}

@@ -1,0 +1,50 @@
+Problem:
+Given an array arr[] of distinct integers and a target, your task is to find all unique combinations in the array where the sum is equal to target. The same number may be chosen from the array any number of times to make target.
+
+Note: You can return your answer in any order, but the driver code will print the combinations in sorted order only.
+
+Examples:
+
+Input: arr[] = [1, 2, 3], target = 5
+Output: [[1, 1, 1, 1, 1], [1, 1, 1, 2], [1, 1, 3], [1, 2, 2], [2, 3]]
+Explanation: All the combination have sum of elements equals to target.
+
+Time complexity: O(2^n)
+Space complexity: O(T/N) -> Stack space(T = target, N = smallest element)
+
+Code:
+class Solution {
+    public ArrayList<ArrayList<Integer>> targetSumComb(int[] arr, int target) {
+
+        ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+        
+        
+        Arrays.sort(arr);
+        
+        f(0, arr, target, new ArrayList<>(), res);
+        
+        return res;
+        
+    }
+    
+    void f(int i, int[] arr, int target, List<Integer> list, ArrayList<ArrayList<Integer>> res) {
+  
+        if(target == 0) {
+            res.add(new ArrayList<>(list));
+            return;
+        }
+        
+        if(i == arr.length || target < 0) return;
+
+        //not take
+        f(i+1, arr, target, list, res);
+        
+        //take
+        list.add(arr[i]);
+        f(i, arr, target-arr[i], list, res);
+        list.remove(list.size()-1);
+    
+    }
+    
+    
+}

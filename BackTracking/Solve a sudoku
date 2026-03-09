@@ -1,0 +1,59 @@
+Problem:
+Given an incomplete Sudoku in the form of matrix mat[][] of order 9*9, the task is to solve the Sudoku. It is guaranteed that the input Sudoku will have exactly one solution.
+
+A sudoku solution must satisfy all of the following rules:
+
+Each of the digits 1-9 must occur exactly once in each row.
+Each of the digits 1-9 must occur exactly once in each column.
+Each of the digits 1-9 must occur exactly once in each of the 9, 3x3 sub-boxes of the grid.
+Note: Zeros represent blanks to be filled with numbers 1-9, while non-zero cells are fixed and cannot be changed.
+
+
+Time complexity: O(9^81)
+Space complexity: O(9*9) -> Stack space
+
+Code:
+class Solution {
+    public void solveSudoku(int[][] mat) {
+        solve(mat);    
+    }
+
+    private boolean solve(int[][] mat) {  
+        for(int row = 0; row < 9; row++) {
+            for(int col = 0; col < 9; col++) {
+                
+                if(mat[row][col] == 0) {
+                    
+                    for(int k = 1; k <= 9; k++) {
+                        if(isValid(row, col, k, mat)) {
+                            mat[row][col] = k;
+                            if(solve(mat)) return true;
+                            mat[row][col] = 0;
+                        }
+                    }
+                    
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+        
+    }
+    
+    
+    private boolean isValid(int row, int col, int value, int[][] mat) {
+ 
+        for(int i = 0; i < 9; i++) {
+            
+            if(mat[i][col] == value) return false;
+            if(mat[row][i] == value) return false;
+            
+            if(mat[(row/3)*3 + (i/3)][(col/3) * 3 + (i%3)] == value) return false;
+            
+        }
+        
+        return true;
+        
+    }
+}
