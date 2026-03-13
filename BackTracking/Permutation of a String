@@ -1,0 +1,59 @@
+Problem:
+Given a string s, which may contain duplicate characters, your task is to generate and return an array of all unique permutations of the string. You can return your answer in any order.
+
+Examples:
+
+Input: s = "ABC"
+Output: ["ABC", "ACB", "BAC", "BCA", "CAB", "CBA"]
+Explanation: Given string ABC has 6 unique permutations.
+
+Approach: Map to store frequency + Recursion
+Time complexity: O(n!)
+Space complexity: (n) -> for string and map
+
+
+Code:
+class Solution {
+    public ArrayList<String> findPermutation(String s) {
+   
+        ArrayList<String> res = new ArrayList<>();
+        
+        Map<Character, Integer> map = new HashMap<>();
+        
+        for(char ch : s.toCharArray()) {
+            map.put(ch, map.getOrDefault(ch, 0) +1);
+        }
+        
+        f(s.length(), new StringBuilder(), map, res); 
+        return res;
+    
+    }
+    
+    
+    private void f(int n, StringBuilder s, Map<Character, Integer> map, ArrayList<String> res) {
+        
+        if(s.length() == n) {
+            res.add(new String(s));
+            return;
+        }
+        
+        for(Map.Entry<Character, Integer> m : map.entrySet()) {
+            char c = m.getKey();
+            int freq = m.getValue();
+            
+            if( freq == 0) continue;
+            
+            s.append(c);
+            
+            map.put(c, freq-1);
+            
+            f(n, s, map, res);
+            
+            s.deleteCharAt(s.length()-1);
+            
+            map.put(c, freq);
+            
+        }
+        
+    }
+}

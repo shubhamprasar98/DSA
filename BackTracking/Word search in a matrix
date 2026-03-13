@@ -1,0 +1,64 @@
+Problem:
+You are given a matrix mat[][] of size n*m containing english alphabets and a string word. Check if the word exists on the mat[][] or not. The word can be constructed by using letters from adjacent cells, either horizontally or vertically. The same cell cannot be used more than once.
+
+
+Time complexity: 0(n * m * 3^k)
+
+Space complexity: 0(n*m)
+
+Code:
+class Solution {
+    public boolean isWordExist(char[][] mat, String word) {
+        // Code here
+        int n = mat.length;
+        int m = mat[0].length;
+        
+        int[][] visit = new int[n][m];
+        
+        
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                
+                if(mat[i][j] == word.charAt(0)) {
+                    visit[i][j] = 1;
+                    if(f(1, i, j, mat, word, visit)) return true;
+                    visit[i][j] = 0;
+                }
+            }
+        }
+        
+        return false;
+            
+    }
+    
+    private boolean f(int ind, int row, int col, char[][] mat, String word, int[][] visit) {
+        
+        if(ind == word.length()){
+            return true;
+        }
+        
+        if(ind > word.length()) {
+            return false;
+        }
+        
+        int[] dirR = {0,1,0,-1};
+        int[] dirC = {1,0,-1,0};
+        
+        
+        for(int i = 0; i < 4; i++) {
+            
+            int new_row = row + dirR[i];
+            int new_col = col + dirC[i];
+            
+            if(new_row >= 0 && new_row < mat.length && new_col >= 0 && new_col < mat[0].length && visit[new_row][new_col] == 0 && mat[new_row][new_col] == word.charAt(ind)) {
+                visit[new_row][new_col] = 1;
+                if(f(ind+1, new_row, new_col, mat, word, visit)) return true;
+                visit[new_row][new_col] = 0;
+            }
+        
+        }
+        
+        return false;
+    
+    }
+}

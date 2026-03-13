@@ -1,0 +1,51 @@
+Problem:
+Given an array arr[] and a target, your task is to find all unique combinations in the array where the sum of the elements is equal to target. Each element in arr[] can be used at most once in the combination.
+
+Note: You can return your answer in any order, the driver code will print them in sorted order.
+Test cases are generated such that number of unique combination does not exceed 106.
+
+Examples:
+
+Input: arr[] = [1, 2, 3], target = 5
+Output: [[2, 3]]
+Explanation: There is only one unique combinations whose sum is equal to the target.
+
+Time complexity: O(2^n)
+Space complexity: o(n)
+
+Code:
+class Solution {
+    public ArrayList<ArrayList<Integer>> uniqueCombinations(int[] arr, int target) {
+        // code here
+        
+        Set<ArrayList<Integer>> res = new HashSet<>();
+        Arrays.sort(arr);
+        f(0, arr, target, new ArrayList<>(), res);
+        
+        return new ArrayList<>(res);
+        
+    }
+    
+    
+    private void f(int i, int[] arr, int target, List<Integer> list, Set<ArrayList<Integer>> res) {
+        
+        if(target == 0) {
+            res.add(new ArrayList<>(list));
+            return;
+        }
+        
+        if(i == arr.length || target < 0) {
+            return;
+        }
+        
+        
+        //take
+        list.add(arr[i]);
+        f(i+1, arr, target - arr[i], list, res);
+        list.remove(list.size()-1);
+        
+        //not_take
+        f(i+1, arr, target, list, res);
+        
+    }
+}

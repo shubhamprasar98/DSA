@@ -1,0 +1,68 @@
+Problem:
+Given a string s containing only digits, your task is to restore it by returning all possible valid IP address combinations. You can return your answer in any order.
+
+A valid IP address must be in the form of A.B.C.D, where A, B, C, and D are numbers from 0-255(inclusive).
+
+Note: The numbers cannot be 0 prefixed unless they are 0. For example, 1.1.2.11 and 0.11.21.1 are valid IP addresses while 01.1.2.11 and 00.11.21.1 are not.
+
+Examples:
+
+Input: s = “255678166”
+Output: [“25.56.78.166”, “255.6.78.166”, “255.67.8.166”, “255.67.81.66”]
+Explanation: These are the only valid possible IP addresses.
+
+
+Time complexity: O(3 ^ 4) = O(1)
+Space complexity: O(1)
+
+Code:
+class Solution {
+    public ArrayList<String> generateIp(String s) {
+
+        ArrayList<String> ans = new ArrayList<>();
+        
+        if(s.length() < 4 || s.length() > 12) return ans;
+        
+        f(0, s, 1, "", ans);
+        
+        return ans;
+        
+    }
+    
+    private void f(int i, String s, int part, String sb, ArrayList<String> ans) {
+        
+        if(i == s.length() && part == 5) {
+            ans.add(new String(sb));
+            return;
+        }
+        
+        if(s.length() == i || part > 4) {
+            return;
+        }
+        
+        String temp = "";
+        
+        for(int j = i; j < Math.min(i + 3, s.length()); j++) {
+            
+            temp += s.charAt(j);
+            
+            if(isValid(temp))
+                if(part == 1) {
+                    f(j+1, s, part+1, temp, ans);
+                }
+                else {
+                    f(j+1, s, part+1, sb + "." + temp, ans);
+                }
+        }
+        
+        
+    }
+    
+    
+    private boolean isValid(String value) { 
+        if(Integer.parseInt(value) > 255 ||value.length() > 1 && value.charAt(0) == '0') {
+            return false;
+        }
+        return true;
+    }
+}

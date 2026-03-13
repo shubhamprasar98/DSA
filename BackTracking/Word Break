@@ -1,0 +1,53 @@
+Problem:
+Given a string s and a dictionary dict[] of valid words, you need to return all possible ways to break the string s into sentence such that each word in the sentence is a valid dictionary word.
+You are allowed to use a valid word multiple times in the sentence.
+
+Examples:
+
+Input: s = "likegfg", dict[] = ["lik", "like", "egfg", "gfg"]
+Output: 
+"lik egfg"
+"like gfg"
+Explanation: All the words in the given sentences are present in the dictionary.
+
+
+Time complexity:
+Space complexity:
+
+
+Code:
+// User function Template for Java
+class Solution {
+    static String[] wordBreak(String[] dict, String s) {
+        List<String> ans = new ArrayList<>();
+        
+        f(0,0, s, "", new HashSet<>(Arrays.asList(dict)), ans);
+
+        String[] res = ans.toArray(new String[0]);
+        
+        return res;
+       
+    }
+    
+    static void f(int left, int right, String word, String s, Set<String> dict, List<String> ans) {
+        
+        if(left == word.length()) {
+            ans.add(s.trim());
+            return;
+        }
+        
+        if(right > word.length()) return;
+        
+        String sub = word.substring(left, right);
+        
+        
+        
+        if(dict.contains(sub)) {
+            f(right, right+1, word, s + " " + sub, dict, ans);
+        }
+        
+        f(left, right+1, word, s, dict, ans);
+ 
+    }
+       
+}
