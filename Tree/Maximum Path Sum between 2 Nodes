@@ -1,0 +1,36 @@
+Problem:
+Given the root of a binary tree, your task is to find the maximum path sum. 
+The path may start and end at any node in the tree.
+
+Code:
+class Solution {
+    int findMaxSum(Node root) {
+     
+        if(root == null) return 0;
+        
+        
+        int[] sum = new int[1];
+        sum[0] = Integer.MIN_VALUE;
+        
+        f(root, sum);
+        
+        return sum[0];
+    }
+    
+    private int f(Node root, int[] sum) {
+        
+        if(root == null) return 0;
+        
+        int leftSum = f(root.left, sum);
+        int rightSum = f(root.right, sum);
+        
+        if(leftSum < 0) leftSum = 0;
+        if(rightSum < 0) rightSum = 0;
+        
+        int total = leftSum + rightSum + root.data;
+        
+        sum[0] = Math.max(total, sum[0]);
+        
+        return Math.max(leftSum, rightSum) + root.data;
+    }
+}

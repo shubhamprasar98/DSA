@@ -1,0 +1,61 @@
+Approach : Morris Traversal
+Time complexity: O(n)
+Space complexity: O(1)
+
+Code:
+class Solution {
+    Node bToDLL(Node root) {
+        
+        if(root == null) return null;
+        
+        Node head = null;
+        Node tail = null;
+        
+        Node curr = root;
+        
+        while(curr != null) {
+            
+            if(curr.left == null) {
+                
+                
+                if(head == null) {
+                    head = curr;
+                    tail = curr;
+                }
+                
+                else { 
+                    tail.right = curr;
+                    curr.left = tail;
+                    tail = curr;
+                }
+                
+                curr = curr.right;
+                
+            }
+            
+            else{
+                
+                Node prev = curr.left;
+                
+                while(prev.right != null && prev.right != curr) {
+                    prev = prev.right;
+                }
+                
+                if(prev.right == null) {
+                    prev.right = curr;
+                    curr = curr.left;
+                }
+                
+                else{
+                    tail.right = curr;
+                    curr.left = tail;
+                    tail = curr;
+                    curr = curr.right;
+                }
+            }
+        }
+        
+        return head;
+        
+    }
+}

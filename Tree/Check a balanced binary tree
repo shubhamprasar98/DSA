@@ -1,0 +1,38 @@
+Note: A binary tree is considered height-balanced if the absolute difference in heights 
+of the left and right subtrees is at most 1 for every node in the tree.
+
+Time complexity: O(n)
+Space complexity: O(h)
+Code:
+lass Solution {
+    public boolean isBalanced(Node root) {
+
+        if(root == null) return true;
+        
+        int h1 = height(root.left);
+        int h2 = height(root.right);
+        
+        if(h1 == 1000 || h2 == 1000 || Math.abs(h1-h2) > 1) return false;
+        
+        return true;
+        
+    }
+    
+    private int height(Node root) {
+        
+        if(root == null) return 0;
+        
+        int h1 = height(root.left);
+        int h2 = height(root.right);
+        
+        
+        int diff = Math.abs(h1-h2);
+        
+        if(h1 == 1000 || h2 == 1000 || diff > 1) return 1000;
+        
+        
+        return Math.max(h1, h2) + 1;
+        
+        
+    }
+}

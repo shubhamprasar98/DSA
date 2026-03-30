@@ -1,0 +1,47 @@
+Time complexity: O(n)
+Space complexity: O(1)
+
+Code:
+lass Solution {
+    public ArrayList<Integer> inOrder(Node root) {
+        
+        ArrayList<Integer> ans = new ArrayList<>();
+
+        Node curr = root;
+        
+        while(curr != null) {
+            
+            if(curr.left == null) {
+                ans.add(curr.data);
+                curr = curr.right;
+            }
+            
+            else{
+                
+                Node preprocessor = curr.left;
+            
+                while(preprocessor.right != null && preprocessor.right != curr) {
+                    preprocessor = preprocessor.right;
+                }
+                
+                if(preprocessor.right == null) {
+                    preprocessor.right = curr;
+                    curr = curr.left;
+                }
+                
+                else{
+                    preprocessor.right = null;
+                    ans.add(curr.data);
+                    curr = curr.right;
+                }
+            }
+            
+            
+        }
+        
+        return ans;
+        
+        
+        
+    }
+}

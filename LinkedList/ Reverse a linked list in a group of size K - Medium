@@ -1,0 +1,148 @@
+Time complexity: O(n)
+Space complexity: O(1)
+
+Code: 
+Solution 1:
+
+class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        
+        if(head == null || head.next == null || k == 1) return head;
+
+        ListNode curr = head;
+        ListNode prev = head;
+
+        ListNode dummy = new ListNode();
+        ListNode last = dummy;
+    
+
+        int cnt = 1;
+        while(curr != null) {
+
+            if(cnt == k) {
+               
+               ListNode next = curr.next;
+               curr.next = null;
+
+               curr = next;
+
+               ListNode node = reverse(prev);
+
+               last.next = node;
+               last = prev;
+               prev = next;
+
+               cnt = 1;
+               continue;
+            }
+
+            curr = curr.next;
+            cnt++;
+
+            
+        }
+
+        last.next = prev;
+
+        return dummy.next;
+        
+    }
+
+    ListNode reverse(ListNode head) {
+
+        ListNode prev = null;
+        ListNode curr = head;
+
+        while(curr != null) {
+            ListNode temp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = temp;
+        }
+
+        return prev;
+    }
+}
+
+Solution 2:
+
+class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+
+        if(head == null || k <= 1){
+            return head;
+        }
+
+        ListNode temp = head;
+
+        ListNode prevNode = null;
+        ListNode nextNode = null;
+
+        while(temp != null){
+
+            ListNode kthNode = getKthNode(temp, k);
+
+            if(kthNode == null){
+                if(prevNode != null){
+                    prevNode.next = temp;
+                }
+
+                break;
+            }
+
+            nextNode = kthNode.next;
+            kthNode.next = null;
+
+            reverse(temp);
+
+            if(temp == head){
+                head = kthNode;
+            }
+            else{
+                prevNode.next = kthNode;
+            }
+
+            prevNode = temp;
+            temp = nextNode;
+
+        }
+
+        return head;
+
+        
+    }
+
+
+    ListNode getKthNode(ListNode head, int k) {
+        k--;
+        while(head != null && k != 0){
+            head = head.next;
+            k--;
+        }
+
+        return head;
+    }
+
+
+
+    ListNode reverse(ListNode head){
+
+        if(head == null || head.next == null){
+            return head;
+        }
+
+        ListNode start = head;
+        ListNode curr = head.next;
+        head.next = null;
+
+        while(curr != null){
+            ListNode temp = curr;
+            curr = curr.next;
+            temp.next = start;
+            start = temp;
+        }
+
+        return start;
+
+    }
+}

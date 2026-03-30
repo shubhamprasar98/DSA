@@ -1,0 +1,43 @@
+Time complexity: O(n)
+Space complexity: O(1)
+
+Code:
+
+class Solution {
+    public Node rotate(Node head, int k) {
+        if(head == null || head.next == null || k == 0) return head;
+        
+        Node curr = head;
+        int cnt = 0;
+        Node last = null;
+        while(curr != null) {
+            cnt++;
+            last = curr;
+            curr = curr.next;
+            
+        }
+        
+        
+        int times = k % cnt;
+        
+        if(times == 0) return head;
+        
+        cnt = 0;
+        curr = head;
+        Node prev = head;
+        while(cnt < times) {
+            cnt++;
+            prev = curr;
+            curr = curr.next;
+        }
+        
+        prev.next = null;
+        last.next = head;
+        
+        //head = curr;
+        
+        return curr;
+        
+        
+    }
+}

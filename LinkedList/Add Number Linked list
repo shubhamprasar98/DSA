@@ -1,0 +1,99 @@
+Time complexity: O(m + n)
+Space complexity; O(max(m, n))
+Code:
+class Solution {
+    public Node addTwoLists(Node head1, Node head2) {
+        // code here
+        
+        if(head1 == null) return head2;
+        if(head2 == null) return head1;
+        
+        Node rev1 = removeStartingZerosAndReverse(head1);
+        Node rev2 = removeStartingZerosAndReverse(head2);
+        
+        int carry = 0;
+        
+        Node head = null;
+        
+        while(rev1 != null && rev2 != null) {
+            
+            int data = rev1.data + rev2.data + carry;
+            
+            int num = data %  10;
+            carry = data / 10;
+            
+            Node node = new Node(num);
+            node.next = head;
+            head = node;
+            rev1 = rev1.next;
+            rev2 = rev2.next;
+            
+        }
+        
+        
+        while(rev1 != null) {
+            
+            int data = rev1.data + carry;
+            
+            int num = data %  10;
+            carry = data / 10;
+            
+            Node node = new Node(num);
+            node.next = head;
+            head = node;
+            rev1 = rev1.next;
+            
+        }
+        
+        while(rev2 != null) {
+            
+            int data = rev2.data + carry;
+            
+            int num = data %  10;
+            carry = data / 10;
+            
+            Node node = new Node(num);
+            node.next = head;
+            head = node;
+            rev2= rev2.next;
+            
+        }
+        
+        if(carry != 0) {
+            Node node = new Node(carry);
+            node.next = head;
+            head = node;
+        }
+         
+         
+         return head;
+    }
+    
+
+    
+    private Node removeStartingZerosAndReverse(Node head) {
+        
+        while(head != null) {
+            if(head.data != 0) {
+                break;
+            }
+            head = head.next;
+        }
+        
+        if(head == null || head.next == null) return head;
+        
+        
+        
+        Node curr = head;
+        Node prev = null;
+        
+        while(curr != null) {
+            Node next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        
+        return prev;
+    }
+}

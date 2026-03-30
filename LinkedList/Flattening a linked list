@@ -1,0 +1,47 @@
+Problem:
+Given a linked list containing n head nodes where every node in the linked list contains two pointers:
+(i) next points to the next node in the list.
+(ii) bottom points to a sub-linked list where the current node is the head.
+Each of the sub-linked lists nodes and the head nodes are sorted in ascending order based on their data. Flatten the linked list such that all the nodes appear in a single level while maintaining the sorted order.
+
+Note:
+1. ↓ represents the bottom pointer and → represents the next pointer.
+2. The flattened list will be printed using the bottom pointer instead of the next pointer.
+
+Time complexity: O(m * n * log m)
+Space complexity: O(m)
+
+Code:
+class Solution {
+    public Node flatten(Node root) {
+        
+        Queue<Node> pq = new PriorityQueue<>((n1, n2) -> Integer.compare(n1.data, n2.data));
+        
+        Node curr = root;
+        
+        while(curr != null) {
+            pq.add(curr);
+            curr = curr.next;
+        }
+        
+        Node dummy = new Node(0);
+        curr = dummy;
+        
+        while(!pq.isEmpty()) {
+            
+            Node poll = pq.poll();
+            
+            poll.next = null;
+            
+            curr.bottom = poll;
+            curr = curr.bottom;
+            
+            if(poll.bottom != null) {
+                pq.offer(poll.bottom);
+            }
+        }
+        
+        return dummy.bottom;
+        
+    }
+}

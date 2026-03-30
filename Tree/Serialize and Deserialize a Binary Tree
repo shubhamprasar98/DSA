@@ -1,0 +1,36 @@
+Problem:
+You are given the root of a binary tree. You have to perform Serialization and Deserialization. Serialization is to store a tree in an array so that it can be later restored and deserialization is reading tree back from the array. Complete the functions:
+
+serialize() : stores the tree into an array and returns the array.
+deSerialize() : deserializes the array to the tree and returns the root of the tree.
+
+
+Code:
+class Solution {
+    public Node connect(Node root) {
+        
+        if(root == null) return null;
+        
+        Queue<Node> q = new LinkedList<>();
+        
+        q.offer(root);
+        
+        while(!q.isEmpty()) {
+            
+            int size = q.size();
+            
+            while(size > 0) {
+                
+                Node node = q.poll();
+                size--;
+                
+                if(size > 0) node.nextRight = q.peek();
+                
+                if(node.left != null) q.offer(node.left);
+                if(node.right != null) q.offer(node.right);
+            }
+        }
+        
+        return root;
+    }
+}

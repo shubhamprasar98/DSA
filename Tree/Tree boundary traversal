@@ -1,0 +1,65 @@
+Code:
+lass Solution {
+    ArrayList<Integer> boundaryTraversal(Node root) {
+        
+        ArrayList<Integer> ans = new ArrayList<>();
+        
+        if(root == null) return ans;
+        
+        if(!isLeaf(root)) ans.add(root.data);
+        
+        leftNodes(root.left, ans);
+        leafNodes(root, ans);
+        rightNodes(root.right, ans);
+        
+        return ans;
+    }
+    
+    
+    private void leftNodes(Node root, ArrayList<Integer> list) {
+        if(root == null || isLeaf(root)) return;
+        
+        list.add(root.data);
+        if(root.left != null) {
+            leftNodes(root.left, list);
+        }
+        else{
+            leftNodes(root.right, list);
+        }
+        
+    } 
+    
+    
+    private void leafNodes(Node root, ArrayList<Integer> list) {
+        if(root == null) return;
+        
+        if(isLeaf(root)) {
+            list.add(root.data);
+            return;
+        }
+        
+        leafNodes(root.left, list);
+        leafNodes(root.right, list);
+    }
+    
+    private boolean isLeaf(Node root) {
+        
+        return (root.left == null) && (root.right == null);
+    }
+    
+    private void rightNodes(Node root, ArrayList<Integer> list) {
+        
+        if(root == null || isLeaf(root)) return;
+
+        if(root.right != null) {
+            rightNodes(root.right, list);
+        }
+        else{
+            rightNodes(root.left, list);
+        }
+        
+        list.add(root.data);
+        
+        
+    }
+}

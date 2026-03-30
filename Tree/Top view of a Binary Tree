@@ -1,0 +1,60 @@
+Time complexity: O(n)
+Space complexity: O(n)
+
+Code:
+
+class Solution {
+    public ArrayList<Integer> topView(Node root) {
+   
+        ArrayList<Integer> list = new ArrayList<>();
+        
+        if(root == null) return list;
+        
+        Map<Integer, Integer> map = new TreeMap<>();
+        
+        Queue<Pair> q = new LinkedList<>();
+        
+        q.offer(new Pair(0, root));
+        
+        while(!q.isEmpty()) {
+            
+            Pair p = q.poll();
+            
+            Node node = p.node;
+            int level = p.level;
+            
+            if(!map.containsKey(level)) {
+                map.put(level, node.data);
+            }
+            
+            if(node.left != null) {
+                q.offer(new Pair(level-1, node.left));
+            }
+            
+            if(node.right != null) {
+                q.offer(new Pair(level+1, node.right));
+            }
+            
+            
+        }
+        
+        for(Map.Entry<Integer, Integer> m : map.entrySet()) {
+            list.add(m.getValue());
+        }
+        
+        
+        return list;
+    }
+    
+    class Pair {
+        
+        Node node;
+        int level;
+        
+        Pair(int level, Node node) {
+            this.node = node;
+            this.level = level;
+        }
+    }
+    
+}
